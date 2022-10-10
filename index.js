@@ -5,22 +5,20 @@ const User = require('./models/User');
 const Message = require('./models/Message')
 const rooms = ['general', 'tech', 'finance', 'crypto'];
 const cors = require('cors');
+require('dotenv').config();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cors());
 
-
-
 app.use('/users', userRoutes)
 require('./connection')
 
-app.get('/', (req, res)=>{
-  res.send('APP IS RUNNING')
-});
+app.get('/', (req, res)=> {
+  res.json("APP AS RUNNING")
+})
 
 const server = require('http').createServer(app);
-const PORT = 5001;
 const io = require('socket.io')(server, {
   cors: {
     origin: 'http://localhost:3000',
@@ -99,6 +97,7 @@ app.get('/rooms', (req, res)=> {
 })
 
 
-server.listen(PORT, ()=> {
-  console.log('listening to port', PORT)
-})
+const port = process.env.PORT ||5000;
+server.listen(port, () =>
+  console.log(`Your server is running on port ${port}`)
+);
